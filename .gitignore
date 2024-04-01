@@ -1,0 +1,7 @@
+__pycache__
+venv
+media
+data
+.env
+db.sqlite3
+migrations
