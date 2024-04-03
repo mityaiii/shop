@@ -1,4 +1,4 @@
-from datetime import timezone
+# from datetime import timezone
 import uuid
 from django.db import models
 from typing import Final
@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator
 from djmoney.models.fields import MoneyField
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 
 MAX_LENGTH: Final[int] = 255 
@@ -156,7 +157,7 @@ class FormModel(models.Model):
 
 
 class ProductPositionModel(models.Model):
-    product = models.ForeignKey(ProductModel, verbose_name="id продкта", on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductModel, verbose_name="id продукта", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name="Число")
     form = models.ForeignKey(FormModel, verbose_name="id Корзины", on_delete=models.CASCADE)
 
@@ -196,7 +197,7 @@ class TransactionModel(models.Model):
         return f"Transaction for Payment {self.form} with ID {self.payment_id} ({self.transaction_status})"
     
     @staticmethod
-    def reduce_quantity(transaction_id: TransactionModel):
+    def reduce_quantity(transaction_id): # TODO: use correct type hint
         try:
             with transaction.atomic():
                 my_transaction = get_object_or_404(TransactionModel, transaction_id)
